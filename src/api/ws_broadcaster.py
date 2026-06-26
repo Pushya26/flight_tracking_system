@@ -29,8 +29,8 @@ class WebSocketBroadcaster:
         await self.connect(ws)
         try:
             while True:
-                await ws.receive_text()  # keep connection alive; client can send pings
-        except WebSocketDisconnect:
+                await ws.receive_text()
+        except Exception:
             self.disconnect(ws)
 
     async def _broadcast_loop(self) -> None:
@@ -39,7 +39,7 @@ class WebSocketBroadcaster:
             if not self._clients:
                 continue
             payload = json.dumps(
-                [asdict(s) for s in self._store.get_all().values()]
+                {"states": [asdict(s) for s in self._store.get_all().values()]}
             )
             dead: Set[WebSocket] = set()
             for ws in list(self._clients):

@@ -14,3 +14,6 @@ class AircraftState:
     vertical_rate: float
     last_seen: float = field(default_factory=time.time)
     on_ground: bool = False
+    origin_icao: Optional[str] = None
+    dest_icao: Optional[str] = None
+    progress: Optional[float] = None
